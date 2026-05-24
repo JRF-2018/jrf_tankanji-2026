@@ -1,0 +1,6 @@
+;;
+;; 英文字以外に無視すべき読み
+;;
+;; okuri-ari entries.
+;; okuri-nasi entries.
+きごう

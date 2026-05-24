@@ -1,0 +1,78 @@
+
+X. かんなの辞書から単漢字辞書への変換
+
+  * dclone を使う。
+
+  * JISX0213 がない場合の出力。
+
+  * あまりにも読みが重なるものは削除しないといけない。
+  
+  * 似た部首の異体字は同じ相対位置に表示したい。
+
+  * 異体字の読みは統一すべきか？
+
+  * L と R は逆にする。
+
+  * unicode で使用できない jis 漢字。次は合字になる。
+
+3-2477	U+304B+309A	# 	[2000]	Private: U+F711
+3-2478	U+304D+309A	# 	[2000]	Private: U+F712
+3-2479	U+304F+309A	# 	[2000]	Private: U+F713
+3-247A	U+3051+309A	# 	[2000]	Private: U+F714
+3-247B	U+3053+309A	# 	[2000]	Private: U+F715
+3-2577	U+30AB+309A	# 	[2000]	Private: U+F716
+3-2578	U+30AD+309A	# 	[2000]	Private: U+F717
+3-2579	U+30AF+309A	# 	[2000]	Private: U+F718
+3-257A	U+30B1+309A	# 	[2000]	Private: U+F719
+3-257B	U+30B3+309A	# 	[2000]	Private: U+F71A
+3-257C	U+30BB+309A	# 	[2000]	Private: U+F71B
+3-257D	U+30C4+309A	# 	[2000]	Private: U+F71C
+3-257E	U+30C8+309A	# 	[2000]	Private: U+F71D
+3-2678	U+31F7+309A	# 	[2000]	Private: U+F734
+3-2B44	U+00E6+0300	# 	[2000]	Private: U+F76A
+3-2B48	U+0254+0300	# 	[2000]	Private: U+F76B
+3-2B49	U+0254+0301	# 	[2000]	Private: U+F76C
+3-2B4A	U+028C+0300	# 	[2000]	Private: U+F76D
+3-2B4B	U+028C+0301	# 	[2000]	Private: U+F76E
+3-2B4C	U+0259+0300	# 	[2000]	Private: U+F76F
+3-2B4D	U+0259+0301	# 	[2000]	Private: U+F770
+3-2B4E	U+025A+0300	# 	[2000]	Private: U+F771
+3-2B4F	U+025A+0301	# 	[2000]	Private: U+F772
+3-2B65	U+02E9+02E5	# 	[2000]	Private: U+F773
+3-2B66	U+02E5+02E9	# 	[2000]	Private: U+F774
+
+  039A は"゜"。0300 や 0301 はダッシュ。02E9,02E5 は音調を表す角線。
+
+@FIRSTPOS_PREF = qw(
+L,	L,	SAL,	A,	A,
+	L,	A,	SAR,	A,	R,
+L,	L,	SAL,	A|L,	A|L,
+	A|R,	A|R,	SAR,	A,	R,
+L,	L,	L|B|A,	L|B|A,	L|B|BL,
+	L,	L|R,	A|B|R,	B|R,	R,
+L|B,	B,	SAB|L,	A|SLR|B, SBL,
+	IN|R|SBL, IN|SAB, IN|SAB|S|SA|SB|SLR,	S|SA|SB|SLR|R,	R,
+);
+
+X. 部首辞書の作成
+
+Group {
+  ID = @Loop;
+}
+
+@te == including @Te;
+@bar == including @bar|@line;
+
+Bushu {
+  ID = @Te;
+  Alias = @Tehen;
+  Graph = @#Tehen, @#Te;
+}
+
+Char {
+  ID = @#Tehen1;
+  Graph = ;
+  Composite = (@#Bar+@#Bar)*@#HookedLine;
+  Stroke = @#Bar->@#Bar->@#HookedLine;
+  Variant = @#Te;
+}

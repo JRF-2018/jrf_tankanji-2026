@@ -1,0 +1,219 @@
+#
+# radical-tab.txt の番号に対する部首名
+#
+#num	stroke	pos(ignore)	yomi
+0	1	IN		まる Circle
+1	1	IN		いち One
+2	1	IN		ぼう たていち Line
+3	1	IN		てん Dot
+4	1	IN		の Slash
+5	1	R|IN		おつ おつにょう れ Second
+6	1	IN		はねぼう Hook
+7	2	SAB|IN		に Two
+8	2	A		なべぶた Lid
+9	2	L|(A|IN)	ひと にんべん やね Man
+10	2	B|(IN)		ひとあし にんにょう Legs
+11	2	A|IN		いる いりかんむり Enter
+12	2	B|(A)		はち Eight
+13	2	SA|(IN)		えんがまえ DownBox
+14	2	A		わかんむり Cover
+15	2	L		にすい Ice
+16	2	SA|B|(R)	つくえ かぜがまえ Table
+17	2	SB		うけばこ OpenBox
+18	2	R|(B)		りっとう かたな Knife
+19	2	R|B		ちから Power
+20	2	SAR		つつみがまえ Wrap
+21	2	R		さじのひ Spoon
+22	2	SL		はこがまえ RightOpenBox
+23	2	SL		かくしがまえ HidingEnclosure
+24	2	IN|B		じゅう Ten
+25	2	A|B|R		ぼくのと Divination
+26	2	R|B		ふしづくり Seal
+27	2	SAL		がんだれ Cliff
+28	2	A|B		む Private
+29	2	B|R|(IN)	また Again
+30	3	L|B|InS*	くち Mouth
+31	3	S		くにがまえ Enclosure
+32	3	B|L|(R|IN)	つち つちへん Earth
+33	3	A|(L|B)		さむらい Scholar
+34	3	A|(B)		ふゆがしら Go
+35	3	B		すいにょう GoSlowly
+36	3	L|(B|InS*|A)	ゆうべ Evening
+37	3	A|B|IN		だい Big
+38	3	L|B|(R|IN)	おんな Woman
+39	3	B|L|(R)		こ Child
+40	3	A		うかんむり Roof
+41	3	R|B|(IN)	すん Inch
+42	3	IN		ちいさい Small
+43	3	IN|SBL		まげあし Lame
+44	3	SAL|(IN)	しかばね Corpse
+45	3	IN		てつ Sprout
+46	3	L|A|B|(InS*)	やま Mountain
+47	3	A|IN		まがりがわ さんぼんがわ River
+48	3	IN		たくみ こうへん Work
+49	3	IN		おのれ すでに み Oneself
+50	3	L|B|(IN)	はば Turban
+51	3	IN		ほす Dry
+52	3	L|IN|(B)	いとがしら いとのあたま ShortThread
+53	3	SAL		まだれ DottedCliff
+54	3	SBL		えんにょう LongStride
+55	3	B|(IN)		にじゅうあし TwoHands
+56	3	SAR		いぐるみ しきがまえ Shoot
+57	3	L|IN|B		ゆみ Bow
+58	3	A|B		けいがしら よ Snout
+59	3	R|(IN)		さんづくり Bristle
+60	3	L		ぎょうにんべん Step
+61	4	L|B|(IN)	こころ したごころ りっしんべん Heart
+62	4	R|IN|(SAR)	かのほこ ほこがまえ Halberd
+63	4	SAL|(L)		とびらのと Door
+64	4	L|B		て てへん Hand
+65	4	R		じゅうまた Branch
+66	4	R|(IN|B)	のぶん とまた ぼくにょう Rap
+67	4	A|(L|B|InS*)	ぶん Script
+68	4	R|(B|IN|InS*)	とます Dipper
+69	4	R|(B|IN)	おのづくり きん Axe
+70	4	L|B		はたへん ほう かたへん Square
+71	4	R		すでのつくり Not
+72	4	A|L|B|(IN)	にち Sun
+73	4	B|A|IN		ひらび いわく Say
+74	4	R|L|(B|InS*|IN)	つき つきへん Moon
+75	4	L|B|IN|(A)	き きへん Tree
+76	4	R		あくび かける Lack
+77	4	A|L|B|(InS*)	とめる とめへん Stop
+78	4	L		むくろ いちた Death
+79	4	R		るまた ほこづくり Weapon
+80	4	B		なかれ はは DoNot
+81	4	IN		くらべるひ Compare
+82	4	SBL|R|B		け Fur
+83	4	IN		うじ Clan
+84	4	SAR		きがまえ Steam
+85	4	L|B|IN		みず さんずい したみず Water
+86	4	L|B|(A)		ひ れっか れんが したび Fire
+87	4	A|(L|R)		つめ つめかんむり のつ Claw
+88	4	A		ちち Father
+89	4	IN		めめ DoubleX
+90	4	L		しょうへん HalfTreeTrunk
+91	4	L		かた Slice
+92	4	IN		きば Fang
+93	4	L|B|(IN)	うし うしへん Cow
+94	4	L|R|(B)		いぬ けものへん Dog
+95	5	L|(IN)		げん Profound
+96	5	L|A|(IN)	たま たまへん Jade
+97	5	R|IN		うり Melon
+98	5	R|SBL|B		かわら Tile
+99	5	IN		あまい Sweet
+100	5	R|(IN)		うまれる Life
+101	5	B		もちいる Use
+102	5	L|B|A|(R|IN)	た Field
+103	5	L|B		ひき ひきへん BoltOfCloth
+104	5	SAL		やまいだれ Sickness
+105	5	A		はつがしら DottedTent
+106	5	L|A		しろ White
+107	5	R|L		ひのかわ Skin
+108	5	B		さら Dish
+109	5	L|B|(IN)	め Eye
+110	5	L|(A)		むのほこ ほこ Spear
+111	5	L|R|(InS*)	や Arrow
+112	5	L|B		いし Stone
+113	5	L|(B)		しめす しめすへん Spirit
+114	5	B		ぐうのあし Track
+115	5	L|A|(B|IN)	のぎ のぎへん Grain
+116	5	A		あな あなかんむり Cave
+117	5	L|A|(B)		たつ Stand
+118	6	A		たけ たけかんむり Bamboo
+119	6	L|B|(IN)	こめ Rice
+120	6	L|(IN)		いと いとへん Silk
+121	6	L|B		ほとぎ みずがめ Jar
+122	6	A		あみがしら よんがしら Net
+123	6	L|A|R|(IN)	ひつじ Sheep
+124	6	A|B|R|(IN)	はね Feather
+125	6	A		おい おいがしら Old
+126	6	IN		しかして And
+127	6	L		らいすき らい Plow
+128	6	L|B		みみ Ear
+129	6	R|IN		ふでづくり Brush
+130	6	L|B		にく にくづき Meat
+131	6	L|(IN)		おみ しん Minister
+132	6	A		みずから Self
+133	6	L|B		いたる Arrive
+134	6	A|SLR|B		うす Mortar
+135	6	L		した Tongue
+136	6	B		ます Oppose
+137	6	L		ふね Boat
+138	6	R		うしとら こん Stopping
+139	6	R		いろ Color
+140	6	A		くさ くさかんむり Grass
+141	6	SAL|(IN)	とらがしら Tiger
+142	6	L|B|(IN)	むし Insect
+143	6	L|(A)		ち Blood
+144	6	SLR		ゆきがまえ ぎょう WalkEnclosure
+145	6	L|B|SAB		ころも Clothes
+146	6	A		かなめのかんむり にし West
+147	7	R|B|(SBL)	みる See
+148	7	L|B		つの Horn
+149	7	L|B		ことば ごんべん Speech
+150	7	L|R		たに Valley
+151	7	B|L		まめ Bean
+152	7	B|L|(R|IN)	いのこ Pig
+153	7	L		むじな Badger
+154	7	L|B|(IN)	かい Shell
+155	7	L		あか Red
+156	7	SBL		はしる しんにゅう Run
+157	7	L|(B)		あし Foot
+158	7	L		み Body
+159	7	L|B|(A|IN)	くるま Cart
+160	7	R|SLR|(IN)	からい Bitter
+161	7	IN		しんのたつ Morning
+162	7	SBL		しんにゅう しんにょう Walk
+163	7	R|(B)		むら おおざと City
+164	7	L|(B|R|IN)	さけのとり ひよみのとり Wine
+165	7	L		のごめ Distinguish
+166	7	B|(R)		さと Village
+167	8	L|B|(InS*)	かね Gold
+168	8	IN		ながい Long
+169	8	SA		もん もんがまえ Gate
+170	8	L		こざとへん ぎふのふ Mound
+171	8	R		れいづくり Slave
+172	8	R|A|B|(IN)	ふるとり ShortTailedBird
+173	8	A		あめ Rain
+174	8	L|R		あお あおへん Blue
+175	8	B		あらず Wrong
+176	9	L|(B)		めん Face
+177	9	L		つくりがわ かくのかわ Leather
+178	9	L|R		なめしがわ TannedLeather
+179	9	IN		にら Leek
+180	9	L|B|(A)		おと Sound
+181	9	R|(IN)		おおがい Leaf
+182	9	SBL|R|B		かぜ Wind
+183	9	IN		とぶ Fly
+184	9	L|B|R		しょく しょくへん Eat
+185	9	IN		くび Head
+186	9	L|(B)		においこう Fragrant
+187	10	L|B|(R|A|IN)	うま Horse
+188	10	L		ほね Bone
+189	10	L|(A)		たかい Tall
+190	10	A		かみがしら Hair
+191	10	SA		とうがしら Fight
+192	10	IN		ちょう SacrificialWine
+193	10	IN		かく Cauldron
+194	10	SBL|R|B		おに きにょう Ghost
+195	11	L|(B|A)		うお Fish
+196	11	R|B|(A|L)	とり Bird
+197	11	L|(IN)		ろ Salt
+198	11	A|(B|L)		しか Deer
+199	11	SBL		むぎ ばくにょう Wheat
+200	11	A		あさ あさかんむり Hemp
+201	12	IN		きいろ Yellow
+202	12	L		きび Millet
+203	12	L|B|(IN)	くろ こく Black
+204	12	L		ふつ Embroidery
+205	13	B|(R)		べん べんあし Frog
+206	13	IN		かなえ Tripod
+207	13	IN		つづみ Drum
+208	13	SBL		ねずみ Rat
+209	14	L		はな Nose
+210	14	SA		せい Even
+211	15	L		は Tooth
+212	16	IN		りゅう Dragon
+213	16	L		かめ Turtle
+214	17	IN		やくのふえ やく Flute

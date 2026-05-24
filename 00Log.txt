@@ -1,0 +1,116 @@
+
+
+    ログ
+    (Created: 2005-??-??, Time-stamp: <2026-05-24T15:04:22Z>)
+
+
+2026-05-25 extract-tankanji.pl
+
+  * jrf_tankanji-2026 を GitHub で公開。
+
+2026-05-24 extract-tankanji.pl
+
+  * Perl スクリプトを UTF-8 化し、use strict と use warnings が通るよ
+    うにした。
+
+  * make_hairetsu_with_bushu_info_2() と
+    swap_yhairetsu_by_yomi_hindo() を作った。
+
+2012-05-05 extract-tankanji.pl
+
+  * jrf_tankanji-20120505.zip を同人的に公開。
+
+05/03/05 extract-tankanji.pl
+
+  * 単語に含まれる単漢字から、単漢字の読みを作る。
+
+    ひらがなの特殊処理、バックワードとフォワードの両方を行う。二文字の
+    場合は簡単。三文字の場合は、最初と最後が一致し、真ん中の一致がない
+    場合、最初または最後の一致がない場合、二つや三つの一致がない場合な
+    どがありえる。
+
+    可能性の候補と確定的候補がある。送りがなの除去を行ったあとで、漢単
+    語長だけの分割のすべてのパターンを可能性候補とする。途中ひらがなが
+    ある場合は、その場所では一致しなければ、reject する。すべての可能
+    性候補の中で、全部のよみがすでにあるものは無視する。確定的読み以外
+    の部分は連結した単語への読みとする。分割数よりも短いよみはその読み
+    がその単語の読みとする。
+
+  * 異体字に読みを与えた。
+
+05/02/25 extract-tankanji.pl
+
+  * 削除リストを読む。
+
+  * 記号は別 map にし、本来の配列もそれにできる限り位置だけでも順う。
+
+  * 記号配列辞書では相対位置が一致しない場合は警告を発する。
+
+  * SKK-JISYO.hoi, yomi-ignore.euc.txt, predef-tankanji.euc.txt を作る。
+
+05/02/23 extract-tankanji.pl
+
+  * 部首に順った配列をする。部首の頻度と個数を調べる analyze_bushu を
+    作る。
+
+  * めずらしいが、多いものは、端に割り当てる。よくつかわれて多いものは
+    特定部位に割り当てる。
+
+  * category で部首の first が重なる場合はその first は隣接する領域を
+    持つべきである。
+
+  * bushu-info.euc.txt を生成した。
+
+  * bushuname.euc.txt を bushu-name.euc.txt に改名。
+
+05/02/22 extract-tankanji.pl
+
+  * 相対画数または総画数によりソートする。<-- 総画数にした。
+
+  * %first, %firsttwo, %list, %set, %occur のそれぞれを調べる。それぞ
+    れでめずらしいものはそれだけで独持の位置を割り当てる価置がある。
+
+  * 部首内でのよみの重複を調べる。
+
+  * 部首単独で minalloc が 3 以上のものは独持に割りあてる。minalloc が
+    2 未満の occur は、occur だけで割り当てる。それらを取り除いた後の
+    ものを解析する。
+
+  * foeach で使うリストの中身をループの中で削除することで挙動がおかし
+    くなりハマった。
+
+  * 部首ごとに order を作る。0 はその部分には表示されないことを示す。
+    すべての読みを pref_loc_next でチェックをする。pref は高いもの順に
+    する。array を逆順でソートした後、0 でないものを grep する。この 
+    order も自動的に作りたい。bushuname.euc.txt に、部首のだいたいの位
+    置のエントリ(U A(bove) B(elow) L R UR S(urround full) SA SB SAL
+    SAR SBL SL SLR SAB InS* INC) を作る。右と左は逆に扱った方が使い
+    やすいかもしれない。ほとんどないものは () でくくる。
+
+05/02/20 extract-tankanji.pl
+
+  * 々などは漢字として扱う。
+
+  * おくりがな付きの辞書との merge を特別に作る。
+
+  * make-kana-table.pl にバグがたくさんあったので FIX。
+
+  * bushuname.euc.txt を作る。
+
+05/02/19 extract-tankanji.pl
+
+  * かな-カナ-半角カナ-Regular Roman の変換表を作る。
+
+  * 単語に含まれる頻度から単漢字の頻度を計算する。
+
+    - 単語の頻度は和にするか最大値にするか考える。
+
+  * JISX0213 の表を EUC に変換する。
+
+05/02/16 extract-tankanji.pl で頻度を扱うようにした。
+
+05/02/16 extract-tankanji.pl を作る。
+
+05/02/16 このディレクトリを作る。
+
+05/02/12 風の辞書を解析した。
