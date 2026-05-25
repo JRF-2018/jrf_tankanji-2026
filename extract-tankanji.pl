@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-our $VERSION = "0.0.2"; # Time-stamp: <2026-05-25T18:14:25Z>
+our $VERSION = "0.0.3"; # Time-stamp: <2026-05-25T20:30:58Z>
 
 use utf8;
 use strict;
@@ -362,6 +362,7 @@ if ($DEBUG) {
   &check_skk_tankanji(\%SKK_TANKANJI);
   &merge_tankanji(\%SKK_TANKANJI, \%PUBDIC_TANKANJI);
   &merge_tankanji_ignore_okuri(\%ONKUN);
+  &merge_kaze_tankanji();
   &complement_itaiji(\%TANKANJI);
   foreach my $file (@PUBDIC) {
     &extract_pubdic_yomi_hindo($file);
@@ -371,6 +372,7 @@ if ($DEBUG) {
   #&make_hairetsu_with_bushu_info(\%TANKANJI);
   &make_yomi_to_kanji();
   &make_kaze_ytok();
+  &check_kaze_tankanji();
   #&make_hairetsu_with_bushu_info_2(\%TANKANJI);
   &make_hairetsu_with_bushu_info_3(\%TANKANJI);
   #&swap_yhairetsu_by_yomi_hindo();
@@ -1888,6 +1890,7 @@ sub make_hairetsu_with_bushu_info_3 {
 	}
       }
     } else {
+      next if ($tankanji =~ /^\xad[\xf0-\xfc]$/);
       my $ukanji = decode('euc-jp', $tankanji);
       next if ($ukanji =~ /^[ぁ-んァ-ヴ０１-９]$/);
       next if ! exists $KAZE_TANKANJI{$tankanji};
@@ -1928,6 +1931,7 @@ sub make_hairetsu_with_bushu_info_3 {
     if (exists $PREDEF_PAGE_SET{$tankanji}) {
       #pass
     } else {
+      next if ($tankanji =~ /^\xad[\xf0-\xfc]$/);
       my $ukanji = decode('euc-jp', $tankanji);
       next if ($ukanji =~ /^[ぁ-んァ-ヴ０１-９]$/);
 
@@ -2023,6 +2027,43 @@ sub make_kaze_ytok {
   %KAZE_YTOK = %ytok;
 }
 
+sub check_kaze_tankanji {
+  foreach my $kanji (sort keys %KAZE_TANKANJI) {
+    if (! exists $TANKANJI{$kanji}) {
+      warn "KAZE: No kanji $kanji\n";
+      next;
+    }
+    foreach my $yomi (sort keys %{$KAZE_TANKANJI{$kanji}}) {
+      my $uyomi = decode('euc-jp', $yomi);
+      if (grep {$uyomi eq $_} (".", "．ぎ", "．ろ", "゛ぎ", "゛ろ",
+			      "、", "。", "，", "．", "゛", "゜")) {
+	next;
+      }
+      if (! exists $TANKANJI{$kanji}->{$yomi}) {
+	warn "KAZE: No yomi $kanji $yomi\n";
+      }
+    }
+  }
+}
+
+sub merge_kaze_tankanji {
+  foreach my $kanji (sort keys %KAZE_TANKANJI) {
+    if (! exists $TANKANJI{$kanji}) {
+      $TANKANJI{$kanji} = {};
+    }
+    foreach my $yomi (sort keys %{$KAZE_TANKANJI{$kanji}}) {
+      my $uyomi = decode('euc-jp', $yomi);
+      if (grep {$uyomi eq $_} (".", "．ぎ", "．ろ", "゛ぎ", "゛ろ",
+			      "、", "。", "，", "．", "゛", "゜")) {
+	next;
+      }
+      if (! exists $TANKANJI{$kanji}->{$yomi}) {
+	$TANKANJI{$kanji}->{$yomi} = [$yomi, $kanji];
+      }
+    }
+  }
+}
+
 sub score_k {
   my ($yomi, $kanji) = @_;
   return 40 if ! exists $KAZE_YTOK{$yomi};
@@ -2040,8 +2081,9 @@ sub swap_yhairetsu_by_yomi_hindo {
 
   foreach my $yomi (yomi_sort(keys %YHAIRETSU)) {
     my $uyomi = decode('euc-jp', $yomi);
-    next if $uyomi eq "きごう" || $uyomi eq "かっこ";
-    
+    next if $uyomi =~ /^[\x20-\x7e]+/ || grep {$uyomi eq $_}
+      ("きごう", "かっこ", "まーく", "けいせん", "．ぎ", "．ろ", "「", "」");
+
     for (my $pos = 0; $pos < 40; $pos++) {
       my @a;
       for (my $page = 0; ; $page++) {
@@ -2110,7 +2152,8 @@ sub compare_k2 {
 sub swap_yhairetsu_by_yomi_hindo_2 {
   foreach my $yomi (yomi_sort(keys %YHAIRETSU)) {
     my $uyomi = decode('euc-jp', $yomi);
-    next if $uyomi eq "きごう" || $uyomi eq "かっこ";
+    next if $uyomi =~ /^[\x20-\x7e]+/ || grep {$uyomi eq $_}
+      ("きごう", "かっこ", "まーく", "けいせん", "．ぎ", "．ろ", "「", "」");
 
     for (my $pos = 0; $pos < 40; $pos++) {
       my @a;
