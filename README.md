@@ -1,6 +1,6 @@
 # jrf_tankanji-2026 / JRF が(同人的に)作成した単漢字辞書
 
-<!-- Time-stamp: "2026-05-25T20:38:59Z" -->
+<!-- Time-stamp: "2026-05-27T15:56:18Z" -->
 
 ## このアーカイブに含まれるファイル
 
@@ -44,6 +44,7 @@ tankanji-2026.txt も euc-jisx0213 です。
   * bushu-info.euc.txt
   * predef-tankanji.euc.txt
   * yomi-ignore.euc.txt
+  * joyokanji_gakunen.euc.txt
   * SKK-JISYO.hoi
   * kana-table.euc.pl (スクリプト用のライブラリ)
   * dakuon-table.euc.pl (スクリプト用のライブラリ)

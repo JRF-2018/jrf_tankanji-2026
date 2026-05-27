@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-our $VERSION = "0.0.4"; # Time-stamp: <2026-05-26T13:34:22Z>
+our $VERSION = "0.0.5"; # Time-stamp: <2026-05-27T15:47:08Z>
 
 use utf8;
 use strict;
@@ -44,9 +44,15 @@ our $PLURAL_TXT = "$JISX0213INFO_DIR/plural0213.txt";
 our $ONKUN_TXT = "$JISX0213INFO_DIR/onkun0213.txt";
 our $ITAIJI_TXT = "$JISX0213INFO_DIR/variant0213.txt";
 
-# 大修館書店の漢字文化アーカイブ(http://www.taishukan.co.jp/kanji/)より
+# 大修館書店の漢字文化アーカイブ(http://www.taishukan.co.jp/kanji/)より。
 our $TAISHUKAN_DIR = "taishukan";
 our $JOYOKANJI = "$TAISHUKAN_DIR/joyokanji.txt";
+
+# 2026年、Claude さんに Wikipedia から作ってもらったファイル。
+#
+# 《常用漢字一覧 - Wikipedia》  
+# https://ja.wikipedia.org/wiki/%E5%B8%B8%E7%94%A8%E6%BC%A2%E5%AD%97%E4%B8%80%E8%A6%A7
+our $JOYOKANJI_2010 = "joyokanji_gakunen.euc.txt";
 
 # 自分で作った補助ファイル
 our $BUSHUNAME_TXT = "bushu-name.euc.txt";
@@ -58,6 +64,13 @@ our $KANA_TABLE_PL = "kana-table.euc.pl";
 our $DAKUON_TABLE_PL = "dakuon-table.euc.pl";
 
 our $DEBUG = 0;
+
+#our $HINDO_CUTOFF = 5;
+our $HINDO_CUTOFF = 10;
+#our $USE_NEW_JOYO = 1;
+our $USE_NEW_JOYO = 0;
+our $USE_JOYO_PREF_ALL = 0;
+#our $USE_JOYO_PREF_ALL = 1;
 
 # 2026年時のプログラムは Gemini さん・ChatGPT さん・Claude さんに指導
 # をあおぐところも多かった。
@@ -173,8 +186,11 @@ our @ORDER = (
 
 #our @JOYO_PREF = (27, 22, 26, 23, 17, 12, 25, 24, 16, 13, 28, 21, 15, 14, 18, 11);
 #our @JOYO_PREF = (27, 22, 26, 23, 17, 12, 25, 24, 16, 13);
+#our @JOYO_PREF = (27, 22, 26, 23, 17, 12, 25, 24, 16, 13);
 #our @JOYO_PREF = (26, 23, 27, 22, 25, 24, 28, 21, 16, 13, 17, 12, 36, 33, 37, 32, 35, 34);
-our @JOYO_PREF = ();
+our @JOYO_PREF = (26, 23, 27, 22, 25, 24, 28, 21);
+#our @JOYO_PREF = (26, 23, 27, 22, 25, 24);
+#our @JOYO_PREF = ();
 
 our %BUSHU_PREF =
 (
@@ -926,10 +942,9 @@ sub extract_pubdic_tankanji {
     warn "Illegal yomi $yomi $kanji " . strtohex($yomi) . "in $file\n" if ($yomi !~ /^$HIRAGANA+$/o);
     $hindo = 0 if ! defined $hindo;
     $hindo++;
-    #$hindo = 10 if $hindo > 10;
-    $hindo = 5 if $hindo > 5;
-    #if ($hindo > 0) {
-    if ($hindo > 0 && $kanji !~ /^$TRUEKANJI$/) { # 単漢字の頻度は何かおかしいので使わない。
+    $hindo = $HINDO_CUTOFF if $hindo > $HINDO_CUTOFF;
+    #$hindo = 1 if $kanji =~ /^$TRUEKANJI$/; # 単漢字の頻度は何かおかしいので使わない。
+    if ($hindo > 0) { 
       my $word = $kanji;
 
       $word =~ s($KANJI){
@@ -1057,7 +1072,7 @@ sub _wakachi_dfs {
   # 辞書から登録されている読み(EUC)を取得して内部用にデコード
   my @registered_yomis;
   if (exists $TANKANJI_EUC->{$kanji_euc}) {
-    @registered_yomis = map { decode('euc-jp', $_) } keys %{$TANKANJI_EUC->{$kanji_euc}};
+    @registered_yomis = map { decode('euc-jp', $_) } sort keys %{$TANKANJI_EUC->{$kanji_euc}};
   }
 
   # ------------------------------------------------------------------
@@ -1162,10 +1177,9 @@ sub extract_pubdic_yomi_hindo {
       }
     }
     $hindo++;
-    $hindo = 5 if $hindo > 5;
-    # $hindo = 10 if $hindo > 10;
-    if ($hindo > 0 && $kanji !~ /^$TRUEKANJI$/) { # 単漢字の頻度は何かおかしいので使わない。
-    #if ($hindo > 0) {
+    $hindo = $HINDO_CUTOFF if $hindo > $HINDO_CUTOFF;
+    #$hindo = 1 if $kanji =~ /^$TRUEKANJI$/; # 単漢字の頻度は何かおかしいので使わない。
+    if ($hindo > 0) {
       my $result = &estimate_wakachigaki($nookuri, $newyomi, \%TANKANJI);
       if ($nookuri =~ /^$TRUEKANJI$/) {
 	my ($tankanji) = $&;
@@ -1460,6 +1474,35 @@ sub extract_joyokanji {
     #push(@{$HINDO{$kanji}}, $hindo);
   }
   close(DIC);
+
+  my %newjoyo = ();
+  $file = $JOYOKANJI_2010;
+  open(DIC, $file) or die;
+  binmode(DIC);
+  while (<DIC>) {
+    my ($ekanji, $gakunen) = split;
+    if ($gakunen !~ /^[1-6DS]$/) {
+      die "$file: Parse Error!";
+    }
+    #next if $gakunen eq "D";
+    $gakunen = 0 if $gakunen eq "D" or $gakunen eq "S";
+    if (! exists $JOYO{$ekanji}) {
+      #warn "New JOYO: $ekanji $gakunen\n";
+    } elsif ($JOYO{$ekanji} != $gakunen) {
+      #warn "JOYO changed: $ekanji $JOYO{$ekanji} -> $gakunen\n";
+    }
+    $newjoyo{$ekanji} = $gakunen;
+  }
+  close(DIC);
+  foreach my $kanji (sort keys %JOYO) {
+    if (! exists $newjoyo{$kanji}) {
+      #warn "Old JOYO: $kanji $JOYO{$kanji}\n";
+    }
+  }
+  if ($USE_NEW_JOYO) {
+    %JOYO = ();
+    %JOYO = %newjoyo;
+  }
 }
 
 sub extract_bushu {
@@ -1678,13 +1721,13 @@ sub merge_tankanji {
 
 sub merge_tankanji_ignore_okuri {
   foreach my $tbl (@_) {
-    foreach my $kanji (keys %{$tbl}) {
+    foreach my $kanji (sort keys %{$tbl}) {
       $TANKANJI{$kanji} = {} if ! exists $TANKANJI{$kanji};
       foreach my $yomi (sort {length($a) <=> length($b)} 
-			(keys %{$tbl->{$kanji}})) {
+			(sort keys %{$tbl->{$kanji}})) {
 	next if grep {substr($yomi, 0, length($_)) eq $_
 				&& substr($yomi, length($_)) =~ /^$TRUEOKURI$/o}  
-	                    (keys %{$TANKANJI{$kanji}});
+	                    (sort keys %{$TANKANJI{$kanji}});
 	$TANKANJI{$kanji}->{$yomi} = 1;
       }
     }
@@ -1842,7 +1885,7 @@ sub make_pref_info {
     }
   }
   @pref = sort {$KAZE_ORDER[$a] <=> $KAZE_ORDER[$b]} (0..39) if ! @pref;
-  if (exists $JOYO{$kanji} && $JOYO{$kanji}) {
+  if (exists $JOYO{$kanji} && ($USE_JOYO_PREF_ALL || $JOYO{$kanji})) {
     my @a = grep {my $a = $_; grep {$a eq $_} @JOYO_PREF} @pref;
     my @b = grep {my $a = $_; ! grep {$a eq $_} @pref} @JOYO_PREF;
     my @c = grep {my $a = $_; ! grep {$a eq $_} @JOYO_PREF} @pref;
@@ -2086,8 +2129,8 @@ sub make_hairetsu_with_bushu_info_3 {
       my $pinfo = &make_pref_info($tankanji);
       my %pospref;
       foreach my $pos (@{$pinfo->{pref}}) {
-	my @a = keys %{$KAZE_TANKANJI{$tankanji}};
-	my @b = keys %{$tbl->{$tankanji}};
+	my @a = sort keys %{$KAZE_TANKANJI{$tankanji}};
+	my @b = sort keys %{$tbl->{$tankanji}};
 	my @c = grep {my $a = $_; grep {$a eq $_} @a} @b;
 	foreach my $yomi (yomi_sort(@c)) {
 	  $YHAIRETSU{$yomi} = [] if ! exists $YHAIRETSU{$yomi};
@@ -2124,8 +2167,8 @@ sub make_hairetsu_with_bushu_info_3 {
       next if ($ukanji =~ /^[ぁ-んァ-ヴ０１-９]$/);
 
       if (exists $KAZE_TANKANJI{$tankanji}) {
-	my @a = keys %{$KAZE_TANKANJI{$tankanji}};
-	my @b = keys %{$tbl->{$tankanji}};
+	my @a = sort keys %{$KAZE_TANKANJI{$tankanji}};
+	my @b = sort keys %{$tbl->{$tankanji}};
 	my @c = grep {my $a = $_; grep {$a eq $_} @a} @b;
 	my @y = yomi_sort(@c);
 	if (@y) {
@@ -2197,8 +2240,8 @@ sub make_hairetsu_with_bushu_info_3 {
 
 sub make_kaze_ytok {
   my %ytok;
-  foreach my $kanji (keys %KAZE_TANKANJI) {
-    foreach my $yomi (keys %{$KAZE_TANKANJI{$kanji}}) {
+  foreach my $kanji (sort keys %KAZE_TANKANJI) {
+    foreach my $yomi (sort keys %{$KAZE_TANKANJI{$kanji}}) {
       $ytok{$yomi} = [] if ! exists $ytok{$yomi};
       my $pos = $KAZE_TANKANJI{$kanji}->{$yomi};
       my $page = int($pos / 40);
