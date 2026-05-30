@@ -1,11 +1,14 @@
 #!/usr/bin/perl
-our $VERSION = "0.0.5"; # Time-stamp: <2026-05-27T15:47:08Z>
+our $VERSION = "0.1.0"; # Time-stamp: <2026-05-30T15:36:27Z>
 
 use utf8;
 use strict;
 use warnings;
 use sort 'stable';
 use Encode qw(encode decode);
+
+# 出力の文字コードは euc-jisx0213 である。2026年、Perl スクリプトは
+# UTF-8 化したが、内部処理は依然、ほとんど euc-jisx0213 で行っている。
 
 our $OUT = "tankanji-2026.txt"; # 出力を標準出力にしない場合はこれを設定
 
@@ -44,11 +47,12 @@ our $PLURAL_TXT = "$JISX0213INFO_DIR/plural0213.txt";
 our $ONKUN_TXT = "$JISX0213INFO_DIR/onkun0213.txt";
 our $ITAIJI_TXT = "$JISX0213INFO_DIR/variant0213.txt";
 
-# 大修館書店の漢字文化アーカイブ(http://www.taishukan.co.jp/kanji/)より。
+# 大修館書店の漢字文化アーカイブ(http://www.taishukan.co.jp/kanji/)よ
+# り。古い常用漢字表。
 our $TAISHUKAN_DIR = "taishukan";
 our $JOYOKANJI = "$TAISHUKAN_DIR/joyokanji.txt";
 
-# 2026年、Claude さんに Wikipedia から作ってもらったファイル。
+# 2026年、Claude さんに Wikipedia から作ってもらった新しい常用漢字表。
 #
 # 《常用漢字一覧 - Wikipedia》  
 # https://ja.wikipedia.org/wiki/%E5%B8%B8%E7%94%A8%E6%BC%A2%E5%AD%97%E4%B8%80%E8%A6%A7
@@ -64,6 +68,10 @@ our $KANA_TABLE_PL = "kana-table.euc.pl";
 our $DAKUON_TABLE_PL = "dakuon-table.euc.pl";
 
 our $DEBUG = 0;
+
+# 以下は「ハイパーパラメータ」で、ここを調整することで辞書が多少変化す
+# る。あと 後述の @JOYO_PREF も「ハイパーパラメータ」的である。これら
+# を変更して納得のいくものを選んだ。
 
 #our $HINDO_CUTOFF = 5;
 our $HINDO_CUTOFF = 10;
